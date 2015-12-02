@@ -1,33 +1,8 @@
-{-# LANGUAGE DeriveDataTypeable #-}
-
-{-# LANGUAGE CPP #-}
-#if MIN_VERSION_base(4,8,1)
-#define HAS_SOURCE_LOCATIONS
-{-# LANGUAGE ImplicitParams #-}
-#endif
-
-module Test.HUnit.Lang (
-  Assertion,
-  assertFailure,
-
-  Location (..),
-  Result (..),
-  performTestCase,
--- * Internals
--- |
--- /Note:/ This is not part of the public API!  It is exposed so that you can
--- tinker with the internals of HUnit, but do not expect it to be stable!
-  HUnitFailure (..)
-) where
+module Test.HUnit.Lang where
 
 import           Control.DeepSeq
 import           Control.Exception as E
 import           Data.Typeable
-
-#ifdef HAS_SOURCE_LOCATIONS
-import           GHC.SrcLoc
-import           GHC.Stack
-#endif
 
 -- | When an assertion is evaluated, it will output a message if and only if the
 -- assertion fails.
@@ -55,21 +30,12 @@ instance Exception HUnitFailure
 --        else assertFailure msg
 -- @
 assertFailure ::
-#ifdef HAS_SOURCE_LOCATIONS
-     (?loc :: CallStack) =>
-#endif
      String -- ^ A message that is displayed with the assertion failure
   -> Assertion
 assertFailure msg = msg `deepseq` E.throwIO (HUnitFailure location msg)
   where
     location :: Maybe Location
-#ifdef HAS_SOURCE_LOCATIONS
-    location = case reverse (getCallStack ?loc) of
-      (_, loc) : _ -> Just $ Location (srcLocFile loc) (srcLocStartLine loc) (srcLocStartCol loc)
-      [] -> Nothing
-#else
     location = Nothing
-#endif
 
 data Result = Success | Failure (Maybe Location) String | Error (Maybe Location) String
   deriving (Eq, Ord, Show)

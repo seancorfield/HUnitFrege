@@ -1,15 +1,7 @@
 -- | Text-based test controller for running HUnit tests and reporting
 --   results as text, usually to a terminal.
 
-module Test.HUnit.Text
-(
-  PutText(..),
-  putTextToHandle, putTextToShowS,
-  runTestText,
-  showPath, showCounts,
-  runTestTT
-)
-where
+module Test.HUnit.Text where
 
 import Test.HUnit.Base
 
