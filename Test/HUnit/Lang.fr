@@ -14,10 +14,16 @@ data Location = Location {
   locationFile :: FilePath
 , locationLine :: Int
 , locationColumn :: Int
-} deriving (Eq, Ord, Show)
+}
+derive Eq Location
+derive Ord Location
+derive Show Location
 
 data HUnitFailure = HUnitFailure (Maybe Location) String
-    deriving (Eq, Ord, Show, Typeable)
+derive Eq HUnitFailure
+derive Ord HUnitFailure
+derive Show HUnitFailure
+derive Typeable HUnitFailure
 
 instance Exception HUnitFailure
 
@@ -38,7 +44,9 @@ assertFailure msg = msg `deepseq` E.throwIO (HUnitFailure location msg)
     location = Nothing
 
 data Result = Success | Failure (Maybe Location) String | Error (Maybe Location) String
-  deriving (Eq, Ord, Show)
+derive Eq Result
+derive Ord Result
+derive Show Result
 
 -- | Performs a single test case.
 performTestCase :: Assertion -- ^ an assertion to be made during the test case run

@@ -250,13 +250,17 @@ label ~: t = TestLabel label (test t)
 -- | A data structure that hold the results of tests that have been performed
 -- up until this point.
 data Counts = Counts { cases, tried, errors, failures :: Int }
-  deriving (Eq, Show, Read)
+derive Eq Counts
+derive Show Counts
+derive Read Counts
 
 -- | Keeps track of the remaining tests and the results of the performed tests.
 -- As each test is performed, the path is removed and the counts are
 -- updated as appropriate.
 data State = State { path :: Path, counts :: Counts }
-  deriving (Eq, Show, Read)
+derive Eq State
+derive Show State
+derive Read State
 
 -- | Report generator for reporting the start of a test run.
 type ReportStart us = State -> us -> IO us
@@ -271,7 +275,9 @@ type Path = [Node]
 
 -- | Composed into 'Path's.
 data Node  = ListItem Int | Label String
-  deriving (Eq, Show, Read)
+derive Eq Node
+derive Show Node
+derive Read Node
 
 -- | Determines the paths for all 'TestCase's in a tree of @Test@s.
 testCasePaths :: Test -> [Path]
