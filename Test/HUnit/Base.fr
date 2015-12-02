@@ -129,7 +129,9 @@ instance (AssertionPredicable t) => AssertionPredicable (IO t)
 -- Assertion Construction Operators
 -- --------------------------------
 
-infix  1 @?, @=?, @?=
+infix  1 @?
+infix  1 @=?
+infix  1 @?=
 
 -- | Asserts that the condition obtained from the specified
 --   'AssertionPredicable' holds.
@@ -195,7 +197,9 @@ instance (Testable t) => Testable [t]
 -- Test Construction Operators
 -- ---------------------------
 
-infix  1 ~?, ~=?, ~?=
+infix  1 ~?
+infix  1 ~=?
+infix  1 ~?=
 infixr 0 ~:
 
 -- | Creates a test case resulting from asserting the condition obtained
