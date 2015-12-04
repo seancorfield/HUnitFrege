@@ -335,9 +335,9 @@ performTest reportStart reportError reportFailure initialUs initialT = do
         usE <- reportError loc m ssE us'
         return (ssE, usE)
    where c@Counts{ tried = n } = counts ss
-         ss' = ss{ counts = c{ tried = n + 1 } }
-         ssF = ss{ counts = c{ tried = n + 1, failures = failures c + 1 } }
-         ssE = ss{ counts = c{ tried = n + 1, errors   = errors   c + 1 } }
+         ss' = ss.{ counts = c.{ tried = n + 1 } }
+         ssF = ss.{ counts = c.{ tried = n + 1, failures = failures c + 1 } }
+         ssE = ss.{ counts = c.{ tried = n + 1, errors   = errors   c + 1 } }
 
   pt ss us (TestList ts) = foldM f (ss, us) (zip ts [0..])
    where f (ss', us') (t, n) = withNode (ListItem n) ss' us' t
@@ -345,6 +345,6 @@ performTest reportStart reportError reportFailure initialUs initialT = do
   pt ss us (TestLabel label t) = withNode (Label label) ss us t
 
   withNode node ss0 us0 t = do (ss2, us1) <- pt ss1 us0 t
-                               return (ss2{ path = path0 }, us1)
+                               return (ss2.{ path = path0 }, us1)
    where path0 = path ss0
-         ss1 = ss0{ path = node : path0 }
+         ss1 = ss0.{ path = node : path0 }
